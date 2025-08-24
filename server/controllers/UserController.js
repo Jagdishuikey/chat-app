@@ -5,6 +5,7 @@ import { generateToken } from "../config/utils.js";
 import cloudinary from "../config/cloudinary.js";
 import jsonwebToken from 'jsonwebtoken'
 
+
 //signup a usser
 
 export const signup=async(req,res)=>{
@@ -57,6 +58,7 @@ export const login =async(req,res) =>{
          const token=generateToken(userData._id)
 
         res.json({success:true,userData,token,message:"Login Successfull"})
+        
     } catch (error) {
         console.log(error.message);
         res.json({success:false,message:error.message})
@@ -70,12 +72,14 @@ export const checkAuth=(req,res)=>{
 // Temporary route to list all users (remove this in production)
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find({}, {password: 0}); // Exclude password
-        res.json({success: true, users});
+        const loggedInUserId = req.user._id; // comes from protectRoute middleware
+        const users = await User.find({ _id: { $ne: loggedInUserId } }).select("-password"); 
+        res.json({ success: true, users });
     } catch (error) {
-        res.json({success: false, message: error.message});
+        res.json({ success: false, message: error.message });
     }
-}
+};
+
 
 //controller to update user profile details
 export const updateProfile= async(req,res)=>{

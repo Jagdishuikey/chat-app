@@ -8,6 +8,6 @@ userRouter.post("/signup",signup)
 userRouter.post("/login",login)
 userRouter.put("/update-profile",protectRoute,updateProfile);
 userRouter.get("/check",protectRoute,checkAuth)
-userRouter.get("/all-users", getAllUsers) // Temporary route
+userRouter.get("/all-users",protectRoute, getAllUsers) // Temporary route
 
 export default userRouter;

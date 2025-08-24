@@ -43,6 +43,7 @@ const Login = () => {
     console.log('Login attempt:', formData);
     const success = await login('login', formData); // Pass 'login' as state and formData as credentials
     if (success) {
+      console.log("Success")
       navigate('/');
     }
   };

@@ -2,6 +2,8 @@ import { createContext, useEffect, useState } from "react";
 import axios from 'axios'
 import toast from "react-hot-toast";
 import { io } from 'socket.io-client';
+import { useNavigate } from "react-router-dom";
+
 
 const backendUrl=import.meta.env.VITE_BACKEND_URL;
 axios.defaults.baseURL=backendUrl;
@@ -37,9 +39,11 @@ export const AuthProvider=({ children })=>{
 
     const login = async (endpoint, credentials) => {
   try {
+   
     const res = await axios.post(`/api/auth/${endpoint}`, credentials);
     if (res.data.success) {
       localStorage.setItem("token", res.data.token); // save the token
+      setToken(res.data.token);
       setAuthUser(res.data.user); // save user data in state/context
       return true;
     }

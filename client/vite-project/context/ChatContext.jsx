@@ -14,22 +14,34 @@ export const ChatProvider=({children})=>{
     const[users,setUsers]=useState([]);
     const[selectedUser,setSelectedUser]=useState(null)
     const[unseenMessages,setUnseenMessages]=useState({})
+    const [allUsers, setAllUsers] = useState([]);
 
-    const {socket,axios}=useContext(AuthContext);
+    const {socket,axios,token,checkAuth}=useContext(AuthContext);
 
     //functin to get user to sidebar
     const getUsers=async()=>{
         try {
-            const{data}=await axios.get("/api/messages/users")
+            const{data}=await axios.get("/api/auth/all-users")
+            console.log(users)
             if(data.success){
-                setUsers(data.users)
+                setAllUsers(data.users)
                 setUnseenMessages(data.unseenMessages)
-                // console.log(authUsers);
+                console.log("Fetched users:", data.users);
+
             }
         } catch (error) {
             toast.error(error.message)
         }
     }
+    useEffect(() => {
+     if (token) {
+       axios.defaults.headers.common['token'] = token;
+        checkAuth();
+         getUsers();
+  }
+}, [token]);
+
+
     //function to get message for seslected user
     const getMessages=async(userId)=>{
         try {
@@ -54,7 +66,9 @@ export const ChatProvider=({children})=>{
         } catch (error) {
             toast.error(error.message);
         }
-    }
+    };
+    
+
     //function to subscribe to messages for selected users
 
     const subscribeToMessages=async()=>{
@@ -87,7 +101,7 @@ export const ChatProvider=({children})=>{
 
     const value ={
         messages,users,selectedUser,getUsers,getMessages,sendMessage,setSelectedUser,
-        unseenMessages,setUnseenMessages
+        unseenMessages,setUnseenMessages,allUsers
     }
     return(
         <ChatContext.Provider value={value}>
