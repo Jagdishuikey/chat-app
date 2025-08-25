@@ -19,7 +19,7 @@ const ChatContainer = () => {
    const handleSendMessage=async(e)=>{
     e.preventDefault();
     if(input.trim() === "")return null;
-    await sendMessage({text :input.trim()});
+    await sendMessage({text: input.trim()});
     setInput("")
    }
 
@@ -56,12 +56,14 @@ const ChatContainer = () => {
       <div className='flex items-center gap-3 py-3 mx-4 border-b border-stone-500'>
         <img src={selectedUser.profilePic || assets.avatar_icon} alt="" className='w-8 rounded-full' />
           <p className='flex-1 text-lg text-white flex items-center gap-2'>
-            Martin Johnson 
+            {selectedUser.fullName} 
             {onlineUsers.includes(selectedUser._id)}<span className='w-2 h-2 rounded-full bg-green-500'></span>
           </p>
           <img onClick={()=>setSelectedUser(null)} src={assets.arrow_icon} alt="" className='md:hidden max-w-7'/>
           <img src={assets.help_icon} alt="" className="max-md:hidden w-4 h-4" />
       </div>
+
+
       {/* chatarea */}
       <div className='flex flex-col h-[calc(100%-120px)] overflow-y-scroll p-3 pb-6'>
       {messages.map((msg, index)=>(
@@ -90,7 +92,7 @@ const ChatContainer = () => {
       <div className='absolute bottom-0 left-right-0 flex items-center gap-3 p-3'>
         <div className='flex-1 flex itmes-center bg-gray-100/12 px-3 rounded-full'>
           <input onChange={(e)=>setInput(e.target.value)} value={input} 
-          onKeyDown={(e)=>e.key === "Enter" ? handleSendMessage(e):null} type="text" paceholder='send a messsage' className='flex-1 text-sm p-3 border-none rounded-lg outline-none text-white placeholder-gray-400'/>
+          onKeyDown={(e)=>e.key === "Enter" ? handleSendMessage(e):null} type="text" paceholder='send a messsage' className='flex-1 text-sm p-3 border-none rounded-lg outline-none text-white w-[300px] placeholder-gray-400'/>
           <input onChange={handleSendImage} type="file" id='image' accept='image/png,image/jpeg' hidden />
                      <label htmlFor="image">
              <img src={assets.gallery_icon} alt="" className='w-5 mr-4 cursor-pointer mt-3' />

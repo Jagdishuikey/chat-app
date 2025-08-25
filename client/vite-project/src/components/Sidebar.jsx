@@ -17,6 +17,7 @@ const Sidebar = () => {
   const { logout, onlineUsers, authUser } = useContext(AuthContext);
 
   const [input, setInput] = useState("");
+  
 
   // ✅ Filter users outside JSX + exclude yourself
   const filteredUsers = (input
@@ -120,13 +121,16 @@ const Sidebar = () => {
       {/* User List */}
       <div className="flex flex-col">
         {filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => {
+          filteredUsers.map((user,index) => {
             const isOnline = onlineUsers?.includes(user._id);
-            const unseen = unseenMessages?.[user._id] || 0;
+            
 
             return (
               <div
-                onClick={() => setSelectedUser(user)}
+                onClick={() => {
+                  setSelectedUser(user);
+                  setUnseenMessages(prev => ({ ...prev, [user._id]: 0 }));
+                }}
                 key={user._id}
                 className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm ${
                   selectedUser?._id === user._id && "bg-[#282142]/50"
@@ -137,8 +141,8 @@ const Sidebar = () => {
                   alt=""
                   className="w-[35px] aspect-[1/1] rounded-full"
                 />
-                <div className="flex flex-col leading-5">
-                  <p>{user.fullName}</p>
+                <div className="flex flex-col leading-5 caret-amber-50">
+                  <p className="text-white">{user.fullName}</p>
                   <span
                     className={`text-xs ${
                       isOnline ? "text-green-400" : "text-neutral-400"
@@ -147,11 +151,13 @@ const Sidebar = () => {
                     {isOnline ? "Online" : "Offline"}
                   </span>
                 </div>
-                {unseen > 0 && (
+                {unseenMessages?.[user._id]  > 0 && (
                   <p className="absolute top-4 right-4 text-xs h-5 w-5 flex justify-center rounded-full bg-violet-500/50">
-                    {unseen}
+                    {unseenMessages[user._id]}
                   </p>
+                  
                 )}
+                
               </div>
             );
           })

@@ -81,10 +81,9 @@ export const ChatProvider=({children})=>{
                 setMessages((prevMessages)=>[...prevMessages,newMessage]);
                 axios.put(`/api/messages/mark/${newMessage._id}`);
             }else{
-                setUnseenMessages((prevUnseenMessages)=>({
-                    ...prevUnseenMessages,[newMessage.senderId] : 
-                    prevUnseenMessages[newMessage.senderId] ? prevUnseenMessages
-                    [newMessage.senderId] + 1 : 1
+                setUnseenMessages((prevUnseenMessages) => ({
+                 ...prevUnseenMessages,
+                 [newMessage.senderId]: (prevUnseenMessages[newMessage.senderId] || 0) + 1
                 }))
             }
         })
@@ -98,6 +97,8 @@ export const ChatProvider=({children})=>{
         subscribeToMessages();
         return ()=> unsubscribeFromMessages();
     },[socket,selectedUser])
+
+    
 
     const value ={
         messages,users,selectedUser,getUsers,getMessages,sendMessage,setSelectedUser,
