@@ -36,7 +36,7 @@ const handleSubmit=async(e)=>{
           <h3 className='text-base font-medium'>Profile Details</h3>
           <label htmlFor="avatar"className='flex items-center gap-3 cursor-pointer'>
               <input onChange={(e)=>setSelectedImg(e.target.files[0])} type="file" id='avatar' accept='.png, .jpg, .jpeg' hidden />
-              <img src={selectedImg ? URL.createObjectURL(selectedImg): assets.avatar_icon} alt=""
+              <img src={selectedImg ? URL.createObjectURL(selectedImg) : assets.avatar_icon} alt=""
               className={`w-10 h-10 ${selectedImg && 'rounded-full'}`} />
               upload Profile Image
           </label>
@@ -47,7 +47,7 @@ const handleSubmit=async(e)=>{
           Save
          </button>
         </form>
-        <img className={`max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10 $ {selectedImg && 'rounded-full'}`} src={authUser?.profilrPic ||assets.Chillchat} alt="" />
+        <img className={`max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10 $ {selectedImg && 'rounded-full'}`} src={authUser?.profilePic ||assets.Chillchat} alt="" />
         
       </div>
     </div>
