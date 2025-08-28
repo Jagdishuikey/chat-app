@@ -7,7 +7,7 @@ import { useContext } from 'react';
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+      const res = await axios.post("https://chat-app-backend-pi-gilt.vercel.app/api/auth/login", { email, password });
       
       if (res.data.success) {
         localStorage.setItem("token", res.data.token); // store token
