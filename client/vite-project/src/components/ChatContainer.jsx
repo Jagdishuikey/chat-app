@@ -5,7 +5,7 @@ import { formatMessageTime } from '../lib/utils';
 import { ChatContext } from '../../context/ChatContext';
 import { AuthContext } from '../../context/AuthContext';
 import CryptoJS from 'crypto-js';
-// For demo: use a static secret key. In production, use a secure per-chat key!
+
 const SECRET_KEY = "your-strong-secret-key";
 
 function encryptMessage(text) {
