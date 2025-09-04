@@ -31,7 +31,8 @@ const ChatContainer = () => {
   const { messages, selectedUser, setSelectedUser,
     sendMessage, getMessages } = useContext(ChatContext);
   const { authUser, onlineUsers, allUsers } = useContext(AuthContext)
-  const { inCall, localVideoRef, remoteVideoRef,startCall,endCall } = useContext(CallContext);
+  const { inCall, localVideoRef, remoteVideoRef, startCall, endCall } = useContext(CallContext);
+  const [remotePlaying, setRemotePlaying] = useState(false);
 
   const scrollEnd = useRef()
 
@@ -88,17 +89,61 @@ const ChatContainer = () => {
         className="px-3 py-1 rounded bg-violet-600 text-white text-sm" > Call </button>)
         : (<button onClick={endCall} className="px-3 py-1 rounded bg-red-600 text-white text-sm" > End </button>)}
     </div>
-    {/* video call section */}
-    {inCall && (<div className="flex gap-2 justify-center items-center p-2 bg-black h-96">
-      <div className="flex flex-col items-center w-1/2">
-        <p className="text-white mb-1">You</p>
-        <video ref={localVideoRef} autoPlay playsInline muted className="w-full h-full border rounded" /> </div>
-      <div className="flex flex-col items-center w-1/2">
-        <p className="text-white mb-1">Receiver</p>
-        <video ref={remoteVideoRef} autoPlay playsInline className="w-full h-full border rounded" />
+    {/* Video Call Section */}
+    {inCall && (
+      <div className="flex gap-2 justify-center items-center p-2 bg-black h-96 relative">
+
+        {/* Ringing Indicator */}
+        {!remoteVideoRef.current?.srcObject && (
+          <p className="absolute top-2 left-1/2 transform -translate-x-1/2 text-white text-sm">
+            Ringing...
+          </p>
+        )}
+
+        {/* Local Video */}
+        <div className="flex flex-col items-center w-1/2">
+          <p className="text-white mb-1">You</p>
+          <video
+            ref={localVideoRef}
+            autoPlay
+            playsInline
+            muted
+            className="w-full h-full border rounded bg-gray-900"
+          />
+        </div>
+
+        {/* Remote Video */}
+        <div className="flex flex-col items-center w-1/2">
+          <p className="text-white mb-1">Receiver</p>
+          <div className="relative w-full h-full">
+            {!remotePlaying && (
+              <button
+                className="absolute inset-0 z-10 flex items-center justify-center text-white bg-black/40 text-sm"
+                onClick={() => {
+                  if (remoteVideoRef.current) {
+                    remoteVideoRef.current.muted = false;
+                    remoteVideoRef.current.play().then(() => setRemotePlaying(true)).catch(() => {});
+                  }
+                }}
+              >
+                Tap to play audio/video
+              </button>
+            )}
+            <video
+              ref={remoteVideoRef}
+              autoPlay
+              playsInline
+              onPlay={() => setRemotePlaying(true)}
+              onPause={() => setRemotePlaying(false)}
+              className="w-full h-full border rounded bg-gray-900"
+            />
+          </div>
+        </div>
       </div>
-    </div>
     )}
+
+
+
 
 
     {/* chatarea */}

@@ -28,29 +28,44 @@ io.on("connection", (socket) => {
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
 
-  // 🟢 Video Call Offer
-  socket.on("call:offer", ({ offer, toUserId }) => {
-    console.log(`📞 Offer sent to ${toUserId}`);
-    io.to(userSocketMap[toUserId]).emit("call:offer", { offer, fromUserId: userId,offer });
-  });
+  
+// 🟢 Video Call Offer
+socket.on("call:offer", ({ toUserId, offer }) => {
+  const targetSocketId = userSocketMap[toUserId];
+  console.log(`📞 Offer from ${userId} -> ${toUserId} [socket:${targetSocketId}]`);
+  if (targetSocketId) {
+    io.to(targetSocketId).emit("call:offer", { fromUserId: userId, offer });
+  }
+});
 
-  // 🟢 Video Call Answer
-  socket.on("call:answer", ({ answer, toUserId }) => {
-    console.log(`📨 Answer sent to ${toUserId}`);
-    io.to(userSocketMap[toUserId]).emit("call:answer", { answer, fromUserId: userId,answer });
-  });
+// 🟢 Video Call Answer
+socket.on("call:answer", ({ toUserId, answer }) => {
+  const targetSocketId = userSocketMap[toUserId];
+  console.log(`📨 Answer from ${userId} -> ${toUserId} [socket:${targetSocketId}]`);
+  if (targetSocketId) {
+    io.to(targetSocketId).emit("call:answer", { fromUserId: userId, answer });
+  }
+});
 
-  // 🟢 ICE Candidate Exchange
-  socket.on("call:candidate", ({ candidate, toUserId }) => {
-    console.log(`📨 ICE Candidate sent to ${toUserId}`);
-    io.to(userSocketMap[toUserId]).emit("call:candidate", { candidate, fromUserId: userId ,candidate });
-  });
+// 🟢 ICE Candidate Exchange
+socket.on("call:candidate", ({ toUserId, candidate }) => {
+  const targetSocketId = userSocketMap[toUserId];
+  console.log(`❄️ ICE Candidate from ${userId} -> ${toUserId} [socket:${targetSocketId}]`);
+  if (targetSocketId) {
+    io.to(targetSocketId).emit("call:candidate", { fromUserId: userId, candidate });
+  }
+});
 
-  // 🟢 Handle Call End
-  socket.on("call:end", ({ toUserId }) => {
-    console.log(`❌ Call ended, notifying ${toUserId}`);
-    io.to(userSocketMap[toUserId]).emit("call:end", { fromUserId: userId });
-  });
+// 🟢 Handle Call End
+socket.on("call:end", ({ toUserId }) => {
+  const targetSocketId = userSocketMap[toUserId];
+  console.log(`❌ Call end from ${userId} -> ${toUserId} [socket:${targetSocketId}]`);
+  if (targetSocketId) {
+    io.to(targetSocketId).emit("call:end");
+  }
+});
+
+
 
 
   socket.on("disconnect", () => {
