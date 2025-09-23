@@ -81,10 +81,9 @@ const createPeerConnection = () => {
       remoteVideoRef.current.playsInline = true;
       remoteVideoRef.current.muted = true;
       
-      // Add event listeners to handle video loading
+      
       remoteVideoRef.current.onloadedmetadata = () => {
-        // Attempt to play the remote video while keeping it muted by default
-        // to satisfy autoplay policies. Do not auto-unmute here.
+       
         remoteVideoRef.current.play().catch(() => {});
       };
       
@@ -125,7 +124,7 @@ const createPeerConnection = () => {
     if (pc.iceConnectionState === 'failed') {
       console.error("ICE connection failed");
     }
-    // Optionally handle other states if needed
+    
   };
 
   pcRef.current = pc;
