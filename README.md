@@ -3,30 +3,6 @@
 A real-time chat application built using React (Vite) for the frontend and Node.js + Express + Socket.IO for the backend.
 This project demonstrates real-time communication & VideoCall, state management using Context Api, and a scalable client–server architecture.
 
-📁 Project Structure
-chatapp/
-│
-├── client/
-│   └── vite-project/
-│       ├── context/          # Global state & context (auth, chat, socket)
-│       ├── public/           # Static assets
-│       ├── src/              # Main React source code
-│       ├── index.html
-│       ├── vite.config.js
-│       ├── vercel.json
-│       ├── package.json
-│       └── README.md
-│
-├── server/
-│   ├── routes/               # API routes
-│   ├── controllers/          # Business logic
-│   ├── models/               # Database schemas
-│   ├── socket/               # Socket.IO logic
-│   ├── index.js              # Server entry point
-│   └── .gitignore
-│
-└── README.md
-
 🚀 Features
 
 🔐 User Authentication
@@ -111,9 +87,6 @@ Messages are sent instantly via sockets
 Messages are stored in MongoDB
 
 UI updates in real time for both users
-
-<img width="1920" height="1128" alt="Screenshot 2025-09-22 115544" src="https://github.com/user-attachments/assets/579d81e6-dc75-4e18-94df-826875b00fa0" />
-
 
 🚧 Future Improvements
 
